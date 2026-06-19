@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+.screens { display: flex; gap: 12px; align-items: flex-start; }
+.screen { flex: 1; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; min-width: 0; }
+.screen-label { text-align: center; font-size: 11px; color: #888; padding: 6px 0 4px; font-weight: 600; letter-spacing: 0.3px; }
+
+.hms-hdr { background: linear-gradient(90deg, #F5A623 0%, #E07B10 55%, #C96A08 100%); padding: 8px 12px 6px; color: white; display: flex; align-items: center; justify-content: space-between; }
+.hms-hdr-left { display: flex; align-items: center; gap: 7px; }
+.back-btn { background: rgba(255,255,255,0.25); border: none; color: white; width: 20px; height: 20px; border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; flex-shrink: 0; }
+.hms-sys { font-size: 8.5px; opacity: 0.85; }
+.hms-hotel { font-size: 12px; font-weight: 700; }
+.mod-bar { background: #D4711A; padding: 3px 12px; font-size: 10.5px; color: rgba(255,255,255,0.92); font-weight: 500; }
+
+/* Sub-tabs inside screen */
+.sub-tabs { display: flex; background: white; border-bottom: 2px solid #e8e8e8; }
+.stab { flex: 1; text-align: center; padding: 7px 4px; font-size: 11px; font-weight: 500; color: #999; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.stab.active { color: #E8891A; border-bottom-color: #E8891A; font-weight: 700; }
+
+/* Year bar */
+.year-bar { background: white; border-bottom: 1px solid #e8e8e8; padding: 6px 12px; display: flex; align-items: center; gap: 5px; }
+.ytab { padding: 3px 11px; border-radius: 12px; font-size: 10.5px; font-weight: 600; cursor: pointer; border: 1.5px solid #ddd; color: #888; background: white; }
+.ytab.active { background: #E8891A; color: white; border-color: #E8891A; }
+.ytab.add { border-style: dashed; color: #E8891A; border-color: #E8891A; background: white; font-size: 10px; }
+.yr-label { font-size: 10.5px; color: #999; }
+
+/* Info banner */
+.info-banner { background: #f0f7ff; border-bottom: 1px solid #cce0ff; padding: 4px 12px; font-size: 10px; color: #4a6fa5; display: flex; align-items: center; gap: 4px; }
+
+/* Table */
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 10px; }
+.th-main { background: #E8891A; color: white; padding: 6px 5px; text-align: center; font-weight: 700; white-space: nowrap; font-size: 9.5px; border-right: 1px solid rgba(255,255,255,0.2); }
+.th-main.left { text-align: left; padding-left: 10px; min-width: 100px; }
+.th-sub { background: #f08020; color: rgba(255,255,255,0.9); padding: 4px 5px; text-align: center; font-size: 9px; font-weight: 500; border-right: 1px solid rgba(255,255,255,0.15); }
+.grp-hdr td { background: #fff3e0; color: #b85e00; font-weight: 700; font-size: 9.5px; padding: 4px 10px; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1px solid #ffe0b2; }
+tbody tr.dr { border-bottom: 1px solid #f5f5f5; background: white; }
+tbody tr.dr:nth-child(even) { background: #fdf8f3; }
+tbody tr.dr:hover { background: #fffbf4; }
+td { padding: 5px 4px; text-align: center; color: #333; font-size: 10px; }
+td.left { text-align: left; padding-left: 10px; font-weight: 500; color: #1a1a1a; white-space: nowrap; }
+.val { color: #555; }
+tr.total-r td { background: #fff3e0; font-weight: 700; color: #1a1a1a; border-top: 2px solid #E8891A; font-size: 10px; }
+tr.total-r .tv { color: #E8891A; }
+
+/* Bottom */
+.bottom-bar { background: white; border-top: 1px solid #e8e8e8; padding: 7px 12px; display: flex; justify-content: center; }
+.btn-edit { background: #E8891A; color: white; border: none; padding: 5px 32px; border-radius: 4px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+</style>
+
+<div class="screens">
+
+  <!-- SCREEN 1: Statistics -->
+  <div class="screen">
+    <div class="screen-label">① Statistics — auto-populated from Account Journal</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="back-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort</div></div>
+      </div>
+      <i class="ti ti-power" style="color:white;font-size:14px" aria-hidden="true"></i>
+    </div>
+    <div class="mod-bar">... / Statistics</div>
+    <div class="sub-tabs">
+      <div class="stab">Revenue</div>
+      <div class="stab active">Statistics</div>
+      <div class="stab">Segment</div>
+    </div>
+    <div class="year-bar">
+      <span class="yr-label">Year:</span>
+      <div class="ytab active">2026</div>
+      <div class="ytab">2027</div>
+      <div class="ytab">2028</div>
+      <div class="ytab add"><i class="ti ti-plus" style="font-size:8px;vertical-align:-1px"></i> Add</div>
+    </div>
+    <div class="info-banner">
+      <i class="ti ti-info-circle" style="font-size:11px" aria-hidden="true"></i>
+      Rows auto-populated from Account Journal. Fill in monthly budget figures.
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="th-main left" rowspan="2">Statistic</th>
+            <th class="th-main" colspan="12">Monthly Budget — 2026</th>
+            <th class="th-main" rowspan="2">Total</th>
+          </tr>
+          <tr>
+            <th class="th-sub">Jan</th><th class="th-sub">Feb</th><th class="th-sub">Mar</th><th class="th-sub">Apr</th>
+            <th class="th-sub">May</th><th class="th-sub">Jun</th><th class="th-sub">Jul</th><th class="th-sub">Aug</th>
+            <th class="th-sub">Sep</th><th class="th-sub">Oct</th><th class="th-sub">Nov</th><th class="th-sub">Dec</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="dr"><td class="left">Rooms Available</td><td class="val">310</td><td class="val">280</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td style="font-weight:700;color:#E8891A">3,650</td></tr>
+          <tr class="dr"><td class="left">Total Room Occupied</td><td class="val">248</td><td class="val">210</td><td class="val">260</td><td class="val">255</td><td class="val">240</td><td class="val">270</td><td class="val">290</td><td class="val">280</td><td class="val">235</td><td class="val">225</td><td class="val">245</td><td class="val">265</td><td style="font-weight:700;color:#E8891A">3,023</td></tr>
+          <tr class="dr"><td class="left">Room Occ w/ Complimentary</td><td class="val">5</td><td class="val">4</td><td class="val">6</td><td class="val">5</td><td class="val">4</td><td class="val">6</td><td class="val">7</td><td class="val">6</td><td class="val">4</td><td class="val">5</td><td class="val">5</td><td class="val">6</td><td style="font-weight:700;color:#E8891A">63</td></tr>
+          <tr class="dr"><td class="left">Complimentary Room</td><td class="val">3</td><td class="val">2</td><td class="val">4</td><td class="val">3</td><td class="val">3</td><td class="val">4</td><td class="val">5</td><td class="val">4</td><td class="val">2</td><td class="val">3</td><td class="val">3</td><td class="val">4</td><td style="font-weight:700;color:#E8891A">40</td></tr>
+          <tr class="dr"><td class="left">House Use</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td class="val">2</td><td style="font-weight:700;color:#E8891A">24</td></tr>
+          <tr class="dr"><td class="left">No Of Room Guests</td><td class="val">420</td><td class="val">380</td><td class="val">450</td><td class="val">440</td><td class="val">410</td><td class="val">470</td><td class="val">510</td><td class="val">490</td><td class="val">400</td><td class="val">390</td><td class="val">420</td><td class="val">460</td><td style="font-weight:700;color:#E8891A">5,240</td></tr>
+          <tr class="dr"><td class="left">No Of No Show Room</td><td class="val">8</td><td class="val">7</td><td class="val">9</td><td class="val">8</td><td class="val">7</td><td class="val">9</td><td class="val">10</td><td class="val">9</td><td class="val">7</td><td class="val">8</td><td class="val">8</td><td class="val">9</td><td style="font-weight:700;color:#E8891A">99</td></tr>
+          <tr class="dr"><td class="left">Total Rooms</td><td class="val">310</td><td class="val">280</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td class="val">300</td><td class="val">310</td><td style="font-weight:700;color:#E8891A">3,650</td></tr>
+          <tr class="dr"><td class="left">Out Of Order Room</td><td class="val">4</td><td class="val">3</td><td class="val">5</td><td class="val">4</td><td class="val">4</td><td class="val">5</td><td class="val">6</td><td class="val">5</td><td class="val">3</td><td class="val">4</td><td class="val">4</td><td class="val">5</td><td style="font-weight:700;color:#E8891A">52</td></tr>
+          <tr class="dr"><td class="left">Cancellation Room</td><td class="val">12</td><td class="val">10</td><td class="val">13</td><td class="val">11</td><td class="val">10</td><td class="val">14</td><td class="val">15</td><td class="val">14</td><td class="val">10</td><td class="val">11</td><td class="val">12</td><td class="val">13</td><td style="font-weight:700;color:#E8891A">145</td></tr>
+          <tr class="dr"><td class="left">Day Use Room</td><td class="val">6</td><td class="val">5</td><td class="val">7</td><td class="val">6</td><td class="val">5</td><td class="val">7</td><td class="val">8</td><td class="val">7</td><td class="val">5</td><td class="val">6</td><td class="val">6</td><td class="val">7</td><td style="font-weight:700;color:#E8891A">75</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bottom-bar"><button class="btn-edit">Edit</button></div>
+  </div>
+
+  <!-- SCREEN 2: Segment -->
+  <div class="screen">
+    <div class="screen-label">② Segment — auto-populated from Hotel Settings → Segments</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="back-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort</div></div>
+      </div>
+      <i class="ti ti-power" style="color:white;font-size:14px" aria-hidden="true"></i>
+    </div>
+    <div class="mod-bar">... / Segment</div>
+    <div class="sub-tabs">
+      <div class="stab">Revenue</div>
+      <div class="stab">Statistics</div>
+      <div class="stab active">Segment</div>
+    </div>
+    <div class="year-bar">
+      <span class="yr-label">Year:</span>
+      <div class="ytab active">2026</div>
+      <div class="ytab">2027</div>
+      <div class="ytab">2028</div>
+      <div class="ytab add"><i class="ti ti-plus" style="font-size:8px;vertical-align:-1px"></i> Add</div>
+    </div>
+    <div class="info-banner">
+      <i class="ti ti-info-circle" style="font-size:11px" aria-hidden="true"></i>
+      Rows auto-populated from Hotel Settings → Segments. Fill in monthly budget figures.
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="th-main left" rowspan="2">Segment</th>
+            <th class="th-main" colspan="12">Monthly Budget — 2026</th>
+            <th class="th-main" rowspan="2">Total</th>
+          </tr>
+          <tr>
+            <th class="th-sub">Jan</th><th class="th-sub">Feb</th><th class="th-sub">Mar</th><th class="th-sub">Apr</th>
+            <th class="th-sub">May</th><th class="th-sub">Jun</th><th class="th-sub">Jul</th><th class="th-sub">Aug</th>
+            <th class="th-sub">Sep</th><th class="th-sub">Oct</th><th class="th-sub">Nov</th><th class="th-sub">Dec</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="grp-hdr"><td colspan="14">Room Occupied</td></tr>
+          <tr class="dr"><td class="left">Agoda</td><td class="val">42</td><td class="val">38</td><td class="val">45</td><td class="val">43</td><td class="val">40</td><td class="val">48</td><td class="val">52</td><td class="val">50</td><td class="val">38</td><td class="val">36</td><td class="val">41</td><td class="val">46</td><td style="font-weight:700;color:#E8891A">519</td></tr>
+          <tr class="dr"><td class="left">ASEAN 2025</td><td class="val">10</td><td class="val">8</td><td class="val">12</td><td class="val">11</td><td class="val">9</td><td class="val">13</td><td class="val">14</td><td class="val">13</td><td class="val">8</td><td class="val">9</td><td class="val">10</td><td class="val">12</td><td style="font-weight:700;color:#E8891A">129</td></tr>
+          <tr class="dr"><td class="left">Flash Sale</td><td class="val">15</td><td class="val">12</td><td class="val">17</td><td class="val">16</td><td class="val">14</td><td class="val">18</td><td class="val">20</td><td class="val">19</td><td class="val">12</td><td class="val">13</td><td class="val">15</td><td class="val">17</td><td style="font-weight:700;color:#E8891A">188</td></tr>
+          <tr class="dr"><td class="left">Govt Employee (NS)</td><td class="val">8</td><td class="val">7</td><td class="val">9</td><td class="val">8</td><td class="val">7</td><td class="val">10</td><td class="val">11</td><td class="val">10</td><td class="val">7</td><td class="val">7</td><td class="val">8</td><td class="val">9</td><td style="font-weight:700;color:#E8891A">101</td></tr>
+          <tr class="dr"><td class="left">Last Minute Escape 25%</td><td class="val">6</td><td class="val">5</td><td class="val">7</td><td class="val">7</td><td class="val">6</td><td class="val">8</td><td class="val">9</td><td class="val">8</td><td class="val">5</td><td class="val">6</td><td class="val">6</td><td class="val">7</td><td style="font-weight:700;color:#E8891A">80</td></tr>
+          <tr class="dr"><td class="left">Loyalty 20%</td><td class="val">12</td><td class="val">10</td><td class="val">13</td><td class="val">12</td><td class="val">11</td><td class="val">14</td><td class="val">16</td><td class="val">15</td><td class="val">10</td><td class="val">11</td><td class="val">12</td><td class="val">13</td><td style="font-weight:700;color:#E8891A">149</td></tr>
+          <tr class="dr"><td class="left">Merdeka Promo</td><td class="val">4</td><td class="val">3</td><td class="val">5</td><td class="val">5</td><td class="val">4</td><td class="val">6</td><td class="val">7</td><td class="val">6</td><td class="val">3</td><td class="val">4</td><td class="val">4</td><td class="val">5</td><td style="font-weight:700;color:#E8891A">56</td></tr>
+          <tr class="dr"><td class="left">Rayacation</td><td class="val">9</td><td class="val">8</td><td class="val">10</td><td class="val">10</td><td class="val">9</td><td class="val">11</td><td class="val">12</td><td class="val">11</td><td class="val">8</td><td class="val">9</td><td class="val">9</td><td class="val">10</td><td style="font-weight:700;color:#E8891A">116</td></tr>
+          <tr class="dr"><td class="left">Raya Promotion</td><td class="val">5</td><td class="val">4</td><td class="val">6</td><td class="val">6</td><td class="val">5</td><td class="val">7</td><td class="val">8</td><td class="val">7</td><td class="val">4</td><td class="val">5</td><td class="val">5</td><td class="val">6</td><td style="font-weight:700;color:#E8891A">68</td></tr>
+          <tr class="dr"><td class="left">Return Guest 15%</td><td class="val">18</td><td class="val">16</td><td class="val">20</td><td class="val">19</td><td class="val">17</td><td class="val">21</td><td class="val">23</td><td class="val">22</td><td class="val">16</td><td class="val">17</td><td class="val">18</td><td class="val">20</td><td style="font-weight:700;color:#E8891A">227</td></tr>
+          <tr class="dr"><td class="left">Romantika Package</td><td class="val">7</td><td class="val">6</td><td class="val">8</td><td class="val">8</td><td class="val">7</td><td class="val">9</td><td class="val">10</td><td class="val">9</td><td class="val">6</td><td class="val">7</td><td class="val">7</td><td class="val">8</td><td style="font-weight:700;color:#E8891A">92</td></tr>
+          <tr class="dr"><td class="left">Booking.com</td><td class="val">22</td><td class="val">19</td><td class="val">24</td><td class="val">23</td><td class="val">21</td><td class="val">26</td><td class="val">28</td><td class="val">27</td><td class="val">19</td><td class="val">20</td><td class="val">22</td><td class="val">24</td><td style="font-weight:700;color:#E8891A">275</td></tr>
+          <tr class="dr"><td class="left">Ctrip.com</td><td class="val">11</td><td class="val">9</td><td class="val">12</td><td class="val">11</td><td class="val">10</td><td class="val">13</td><td class="val">14</td><td class="val">13</td><td class="val">9</td><td class="val">10</td><td class="val">11</td><td class="val">12</td><td style="font-weight:700;color:#E8891A">135</td></tr>
+          <tr class="total-r">
+            <td class="left">Total Segment 2026</td>
+            <td>169</td><td>145</td><td>188</td><td>179</td><td>160</td><td>204</td><td>224</td><td>210</td><td>145</td><td>154</td><td>168</td><td>189</td>
+            <td class="tv">2,135</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bottom-bar"><button class="btn-edit">Edit</button></div>
+  </div>
+
+</div>

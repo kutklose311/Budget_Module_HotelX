@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+.screens { display: flex; gap: 16px; padding: 0; }
+.screen { flex: 1; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; min-width: 0; }
+.screen-label { text-align: center; font-size: 11px; color: #888; padding: 6px 0 4px; font-weight: 600; letter-spacing: 0.3px; }
+
+/* HEADER */
+.hms-hdr { background: linear-gradient(90deg, #F5A623 0%, #E07B10 55%, #C96A08 100%); padding: 9px 14px 7px; color: white; display: flex; align-items: center; justify-content: space-between; }
+.hms-hdr-left { display: flex; align-items: center; gap: 8px; }
+.back-btn { background: rgba(255,255,255,0.25); border: none; color: white; width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; flex-shrink: 0; }
+.hms-sys { font-size: 9px; opacity: 0.85; }
+.hms-hotel { font-size: 13px; font-weight: 700; }
+.mod-bar { background: #D4711A; padding: 4px 14px; font-size: 11px; color: rgba(255,255,255,0.92); font-weight: 500; }
+
+/* SIDEBAR */
+.body-wrap { display: flex; min-height: 500px; background: #f0f0f0; }
+.sidebar { width: 155px; background: white; border-right: 1px solid #e8e8e8; flex-shrink: 0; font-size: 11.5px; overflow-y: auto; }
+.nav-i { display: flex; align-items: center; gap: 8px; padding: 8px 11px; color: #444; cursor: pointer; border-left: 3px solid transparent; }
+.nav-i.active { color: #E8891A; border-left-color: #E8891A; background: #fff8f0; font-weight: 700; }
+.nav-i i { font-size: 15px; }
+
+/* SCREEN 1 — LANDING */
+.s1-content { flex: 1; padding: 16px; overflow-y: auto; }
+.section-group { margin-bottom: 14px; }
+.section-hdr { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 4px 4px 0 0; padding: 7px 14px; font-size: 12px; font-weight: 700; color: #b85e00; }
+.sub-row { background: white; border: 1px solid #e8e8e8; border-top: none; display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; cursor: pointer; transition: background 0.1s; }
+.sub-row:hover { background: #fffbf4; border-left: 2px solid #E8891A; }
+.sub-row:last-child { border-radius: 0 0 4px 4px; }
+.sub-row-title { font-size: 12.5px; font-weight: 700; color: #1a1a1a; }
+.sub-row-sub { font-size: 10.5px; color: #aaa; margin-top: 1px; }
+.chev { color: #ccc; font-size: 13px; }
+.sub-row.active-row { border-left: 3px solid #E8891A; background: #fffbf4; }
+.sub-row.active-row .chev { color: #E8891A; }
+
+/* SCREEN 2 — DETAIL */
+.s2-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.year-bar { background: white; border-bottom: 1px solid #e8e8e8; padding: 8px 14px; display: flex; align-items: center; gap: 6px; }
+.ytab { padding: 4px 14px; border-radius: 14px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1.5px solid #ddd; color: #888; background: white; }
+.ytab.active { background: #E8891A; color: white; border-color: #E8891A; }
+.ytab.add { border-style: dashed; color: #E8891A; border-color: #E8891A; background: white; font-size: 10.5px; }
+.yr-label { font-size: 11px; color: #999; margin-right: 2px; }
+.tbl-wrap { flex: 1; overflow: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 10.5px; }
+.tbl-hdr-top th { background: #E8891A; color: white; padding: 7px 8px; text-align: center; font-weight: 700; white-space: nowrap; font-size: 10px; border-right: 1px solid rgba(255,255,255,0.2); }
+.tbl-hdr-top th.desc-col { text-align: left; padding-left: 12px; min-width: 120px; position: sticky; left: 0; z-index: 2; background: #E8891A; }
+.tbl-hdr-sub th { background: #f08020; color: rgba(255,255,255,0.9); padding: 5px 6px; text-align: center; font-size: 9.5px; font-weight: 500; border-right: 1px solid rgba(255,255,255,0.15); }
+.grp-hdr td { background: #fff3e0; color: #b85e00; font-weight: 700; font-size: 10px; padding: 5px 12px; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 1px solid #ffe0b2; }
+tbody tr.data-r { border-bottom: 1px solid #f5f5f5; background: white; }
+tbody tr.data-r:nth-child(even) { background: #fdf8f3; }
+tbody tr.data-r:hover { background: #fffbf4; }
+td { padding: 6px 6px; text-align: center; color: #333; }
+td.desc-col { text-align: left; padding-left: 12px; font-weight: 500; color: #1a1a1a; white-space: nowrap; position: sticky; left: 0; background: inherit; z-index: 1; }
+.inp { width: 54px; border: 1px solid #e8e8e8; border-radius: 3px; padding: 3px 3px; font-size: 10px; text-align: right; background: #fafafa; }
+.inp:focus { outline: none; border-color: #E8891A; background: white; }
+.badge { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 8px; font-size: 9px; font-weight: 700; }
+.b-h { background: #e8f0fe; color: #1a5ccc; }
+.b-m { background: #fff3e0; color: #b85e00; }
+.b-i { background: #e8f5e9; color: #2a7d3b; }
+tr.total-r td { background: #fff3e0; font-weight: 700; color: #1a1a1a; border-top: 2px solid #E8891A; }
+tr.total-r td.total-val { color: #E8891A; }
+.bottom-bar { background: white; border-top: 1px solid #e8e8e8; padding: 8px 14px; display: flex; justify-content: center; gap: 8px; }
+.btn-edit { background: #E8891A; color: white; border: none; padding: 6px 28px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.btn-add { background: white; color: #E8891A; border: 1.5px solid #E8891A; padding: 6px 18px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; }
+</style>
+
+<div class="screens">
+
+  <!-- SCREEN 1: Budget Landing -->
+  <div class="screen">
+    <div class="screen-label">① Budget — Landing</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="back-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort Port Dickson</div></div>
+      </div>
+      <i class="ti ti-power" style="color:white;font-size:16px" aria-hidden="true"></i>
+    </div>
+    <div class="mod-bar">Budget</div>
+    <div class="body-wrap">
+      <div class="sidebar">
+        <div class="nav-i"><i class="ti ti-calendar-event" aria-hidden="true"></i> Booking</div>
+        <div class="nav-i"><i class="ti ti-building" aria-hidden="true"></i> Front Desk</div>
+        <div class="nav-i"><i class="ti ti-wash" aria-hidden="true"></i> Housekeeping</div>
+        <div class="nav-i"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i> Room Service</div>
+        <div class="nav-i"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Service Requests</div>
+        <div class="nav-i"><i class="ti ti-package" aria-hidden="true"></i> Package Redemption</div>
+        <div class="nav-i"><i class="ti ti-building-skyscraper" aria-hidden="true"></i> Corp/Govt</div>
+        <div class="nav-i"><i class="ti ti-users" aria-hidden="true"></i> Travel Agents</div>
+        <div class="nav-i"><i class="ti ti-user-circle" aria-hidden="true"></i> Guest Profile</div>
+        <div class="nav-i"><i class="ti ti-speakerphone" aria-hidden="true"></i> Digital Marketing</div>
+        <div class="nav-i"><i class="ti ti-adjustments" aria-hidden="true"></i> Checkout Adjustment</div>
+        <div class="nav-i"><i class="ti ti-chart-bar" aria-hidden="true"></i> Business Insights</div>
+        <div class="nav-i"><i class="ti ti-file-description" aria-hidden="true"></i> Digital Document</div>
+        <div class="nav-i"><i class="ti ti-report-analytics" aria-hidden="true"></i> Digital Reporting</div>
+        <div class="nav-i"><i class="ti ti-building-bank" aria-hidden="true"></i> City Account</div>
+        <div class="nav-i"><i class="ti ti-book" aria-hidden="true"></i> Account Journals</div>
+        <div class="nav-i"><i class="ti ti-file-invoice" aria-hidden="true"></i> Consolidated e-Invoice</div>
+        <div class="nav-i active"><i class="ti ti-calculator" aria-hidden="true"></i> Budget</div>
+        <div class="nav-i"><i class="ti ti-settings" aria-hidden="true"></i> Hotel Settings</div>
+        <div class="nav-i"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i> Common Settings</div>
+        <div class="nav-i"><i class="ti ti-shield" aria-hidden="true"></i> System Admin</div>
+      </div>
+      <div class="s1-content">
+
+        <div class="section-group">
+          <div class="section-hdr">Budget Entry</div>
+          <div class="sub-row active-row">
+            <div>
+              <div class="sub-row-title">Revenue</div>
+              <div class="sub-row-sub">Last updated on – 19 Jun 2026</div>
+            </div>
+            <i class="ti ti-chevron-right chev" style="color:#E8891A" aria-hidden="true"></i>
+          </div>
+          <div class="sub-row">
+            <div>
+              <div class="sub-row-title">Statistics</div>
+              <div class="sub-row-sub">Last updated on – 19 Jun 2026</div>
+            </div>
+            <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+          </div>
+          <div class="sub-row">
+            <div>
+              <div class="sub-row-title">Segment</div>
+              <div class="sub-row-sub">Last updated on – 19 Jun 2026</div>
+            </div>
+            <i class="ti ti-chevron-right chev" aria-hidden="true"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Revenue Detail -->
+  <div class="screen">
+    <div class="screen-label">② Revenue Detail (after clicking Revenue →)</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="back-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort Port Dickson</div></div>
+      </div>
+      <i class="ti ti-power" style="color:white;font-size:16px" aria-hidden="true"></i>
+    </div>
+    <div class="mod-bar">... / Revenue</div>
+
+    <div class="s2-main">
+      <!-- Year tabs -->
+      <div class="year-bar">
+        <span class="yr-label">Year:</span>
+        <div class="ytab active">2026</div>
+        <div class="ytab">2027</div>
+        <div class="ytab">2028</div>
+        <div class="ytab add"><i class="ti ti-plus" style="font-size:9px;vertical-align:-1px"></i> Add Year</div>
+      </div>
+
+      <!-- Table -->
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr class="tbl-hdr-top">
+              <th class="desc-col" rowspan="2">Description</th>
+              <th rowspan="2">Type</th>
+              <th colspan="12">Monthly Budget — 2026</th>
+              <th rowspan="2">Total</th>
+            </tr>
+            <tr class="tbl-hdr-sub">
+              <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
+              <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="grp-hdr"><td colspan="15">Hotel Revenue</td></tr>
+            <tr class="data-r">
+              <td class="desc-col">Room Revenue</td>
+              <td><span class="badge b-h">Hotel</span></td>
+              <td><input class="inp" value="28,500"></td><td><input class="inp" value="26,000"></td>
+              <td><input class="inp" value="31,000"></td><td><input class="inp" value="30,000"></td>
+              <td><input class="inp" value="29,500"></td><td><input class="inp" value="33,000"></td>
+              <td><input class="inp" value="35,000"></td><td><input class="inp" value="34,000"></td>
+              <td><input class="inp" value="27,500"></td><td><input class="inp" value="26,000"></td>
+              <td><input class="inp" value="29,000"></td><td><input class="inp" value="32,000"></td>
+              <td style="font-weight:700;color:#E8891A;white-space:nowrap">361,500</td>
+            </tr>
+
+            <tr class="grp-hdr"><td colspan="15">Incidental Charges</td></tr>
+            <tr class="data-r">
+              <td class="desc-col">Guest Laundry</td>
+              <td><span class="badge b-i">Incidental</span></td>
+              <td><input class="inp" value="1,200"></td><td><input class="inp" value="1,100"></td>
+              <td><input class="inp" value="1,300"></td><td><input class="inp" value="1,250"></td>
+              <td><input class="inp" value="1,150"></td><td><input class="inp" value="1,400"></td>
+              <td><input class="inp" value="1,500"></td><td><input class="inp" value="1,450"></td>
+              <td><input class="inp" value="1,100"></td><td><input class="inp" value="1,050"></td>
+              <td><input class="inp" value="1,200"></td><td><input class="inp" value="1,300"></td>
+              <td style="font-weight:700;color:#E8891A">15,000</td>
+            </tr>
+            <tr class="data-r">
+              <td class="desc-col">Extra Bed Charges</td>
+              <td><span class="badge b-i">Incidental</span></td>
+              <td><input class="inp" value="800"></td><td><input class="inp" value="750"></td>
+              <td><input class="inp" value="900"></td><td><input class="inp" value="850"></td>
+              <td><input class="inp" value="800"></td><td><input class="inp" value="950"></td>
+              <td><input class="inp" value="1,000"></td><td><input class="inp" value="980"></td>
+              <td><input class="inp" value="750"></td><td><input class="inp" value="700"></td>
+              <td><input class="inp" value="820"></td><td><input class="inp" value="900"></td>
+              <td style="font-weight:700;color:#E8891A">10,200</td>
+            </tr>
+
+            <tr class="grp-hdr"><td colspan="15">MenuX Outlets</td></tr>
+            <tr class="data-r">
+              <td class="desc-col">Café Botanica</td>
+              <td><span class="badge b-m">MenuX</span></td>
+              <td><input class="inp" value="12,000"></td><td><input class="inp" value="11,500"></td>
+              <td><input class="inp" value="13,000"></td><td><input class="inp" value="12,500"></td>
+              <td><input class="inp" value="12,000"></td><td><input class="inp" value="14,000"></td>
+              <td><input class="inp" value="15,000"></td><td><input class="inp" value="14,500"></td>
+              <td><input class="inp" value="11,000"></td><td><input class="inp" value="10,500"></td>
+              <td><input class="inp" value="12,000"></td><td><input class="inp" value="13,500"></td>
+              <td style="font-weight:700;color:#E8891A">151,500</td>
+            </tr>
+            <tr class="data-r">
+              <td class="desc-col">Skybar Lounge</td>
+              <td><span class="badge b-m">MenuX</span></td>
+              <td><input class="inp" value="9,000"></td><td><input class="inp" value="8,500"></td>
+              <td><input class="inp" value="9,800"></td><td><input class="inp" value="9,500"></td>
+              <td><input class="inp" value="9,200"></td><td><input class="inp" value="10,500"></td>
+              <td><input class="inp" value="11,000"></td><td><input class="inp" value="10,800"></td>
+              <td><input class="inp" value="8,500"></td><td><input class="inp" value="8,000"></td>
+              <td><input class="inp" value="9,000"></td><td><input class="inp" value="10,000"></td>
+              <td style="font-weight:700;color:#E8891A">113,800</td>
+            </tr>
+
+            <tr class="total-r">
+              <td class="desc-col" colspan="2">Total Revenue 2026</td>
+              <td>51,500</td><td>47,850</td><td>56,000</td><td>54,100</td>
+              <td>52,650</td><td>59,850</td><td>63,500</td><td>61,730</td>
+              <td>48,850</td><td>46,250</td><td>52,020</td><td>57,700</td>
+              <td class="total-val">652,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Bottom bar matching Q3F style -->
+      <div class="bottom-bar">
+        <button class="btn-add"><i class="ti ti-plus" style="font-size:11px;vertical-align:-1px"></i> Add Item</button>
+        <button class="btn-edit">Save</button>
+      </div>
+    </div>
+  </div>
+
+</div>

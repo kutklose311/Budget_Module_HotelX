@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+.screens { display: flex; gap: 14px; align-items: flex-start; }
+.screen { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; flex: 1; min-width: 0; }
+.screen-label { text-align: center; font-size: 11px; color: #888; padding: 6px 0 4px; font-weight: 600; letter-spacing: 0.3px; }
+
+.hms-hdr { background: linear-gradient(90deg, #F5A623 0%, #E07B10 55%, #C96A08 100%); padding: 9px 14px 7px; color: white; display: flex; align-items: center; justify-content: space-between; }
+.hms-hdr-left { display: flex; align-items: center; gap: 8px; }
+.back-btn { background: rgba(255,255,255,0.25); border: none; color: white; width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; flex-shrink: 0; }
+.close-btn { background: rgba(220,50,50,0.7); border: none; color: white; width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; flex-shrink: 0; }
+.hms-sys { font-size: 9px; opacity: 0.85; }
+.hms-hotel { font-size: 13px; font-weight: 700; }
+.mod-bar { background: #D4711A; padding: 4px 14px; font-size: 11px; color: rgba(255,255,255,0.92); font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+.mod-bar .new-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 3px; cursor: pointer; }
+
+/* SCREEN 1 — Dept list */
+.dept-header { padding: 10px 14px; font-size: 13px; font-weight: 700; color: #1a1a1a; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: white; }
+.dept-header i { color: #aaa; font-size: 15px; }
+.dept-row { background: white; border-bottom: 1px solid #f0f0f0; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.dept-row:hover { background: #fffbf4; }
+.dept-row.active { background: #fff8f0; }
+.dept-title { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+.dept-sub { font-size: 10.5px; color: #888; }
+.dept-sub span { color: #E8891A; font-weight: 600; }
+.dots-btn { background: none; border: none; cursor: pointer; color: #bbb; font-size: 16px; padding: 2px 6px; }
+.dropdown { background: white; border: 1px solid #e0e0e0; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); position: absolute; right: 14px; margin-top: 2px; z-index: 10; font-size: 11.5px; }
+.dropdown div { padding: 8px 18px; cursor: pointer; color: #333; }
+.dropdown div:hover { background: #fffbf4; color: #E8891A; }
+.dropdown .active-item { color: #E8891A; font-weight: 700; }
+
+/* SCREEN 2 — Incidental Charges list */
+.ic-header { padding: 10px 14px; font-size: 12px; font-weight: 700; color: #1a1a1a; border-bottom: 1px solid #eee; background: #fff8f0; display: flex; justify-content: space-between; }
+.ic-row { background: white; border-bottom: 1px solid #f0f0f0; padding: 9px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; cursor: pointer; }
+.ic-row:hover { background: #fffbf4; }
+.ic-row .name { font-weight: 600; color: #1a1a1a; }
+.ic-row .meta { font-size: 10px; color: #aaa; margin-top: 1px; }
+.ic-row.active { background: #fff8f0; border-left: 3px solid #E8891A; }
+.add-row { padding: 10px 14px; display: flex; justify-content: flex-end; background: white; border-bottom: 1px solid #f0f0f0; }
+.btn-new { background: #E8891A; color: white; border: none; padding: 5px 14px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+/* SCREEN 3 — Charge Item form */
+.form-wrap { background: white; padding: 0; }
+.form-section { background: #fff8f0; border-bottom: 1px solid #ffe0b2; padding: 8px 16px; font-size: 12px; font-weight: 700; color: #b85e00; }
+.form-body { padding: 14px 16px; }
+.field-row { margin-bottom: 14px; }
+.field-label { font-size: 10.5px; color: #aaa; margin-bottom: 3px; }
+.field-input { width: 100%; border: none; border-bottom: 1px solid #ddd; padding: 5px 0; font-size: 12px; color: #333; outline: none; background: transparent; }
+.field-input:focus { border-bottom-color: #E8891A; }
+.field-row-2 { display: flex; gap: 12px; margin-bottom: 14px; }
+.field-row-2 > div { flex: 1; }
+.checkbox-group { margin-bottom: 6px; }
+.checkbox-group label { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: #333; padding: 5px 0; cursor: pointer; border-bottom: 1px solid #fafafa; }
+.checkbox-group label input[type=checkbox] { accent-color: #E8891A; width: 14px; height: 14px; }
+.budget-field { background: #fff8f0; border: 1.5px solid #E8891A; border-radius: 5px; padding: 10px 12px; margin-bottom: 6px; }
+.budget-field .bfield-label { font-size: 10px; color: #b85e00; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+.budget-field .bfield-label .new-tag { background: #E8891A; color: white; font-size: 8.5px; padding: 1px 5px; border-radius: 8px; font-weight: 700; }
+.budget-select { width: 100%; border: 1px solid #f0c080; border-radius: 4px; padding: 5px 8px; font-size: 11.5px; color: #333; background: white; outline: none; }
+.budget-select:focus { border-color: #E8891A; }
+.divider-label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 6px; border-top: 1px solid #f0f0f0; padding-top: 8px; }
+.einvoice-row { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: #333; padding: 5px 0; }
+.einvoice-row input[type=checkbox] { accent-color: #E8891A; width: 14px; height: 14px; }
+.upload-link { font-size: 10.5px; color: #E8891A; cursor: pointer; margin-top: 8px; }
+</style>
+
+<div class="screens">
+
+  <!-- SCREEN 1: Department List -->
+  <div class="screen" style="max-width:260px; flex:0 0 260px;">
+    <div class="screen-label">① Hotel Settings → Department</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="back-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort</div></div>
+      </div>
+    </div>
+    <div class="mod-bar">... / Department</div>
+    <div class="dept-header">Department (11) <i class="ti ti-search" aria-hidden="true"></i></div>
+    <div class="dept-row"><div><div class="dept-title">City Ledger</div><div class="dept-sub">Incidental Charges : <span>6</span> | Reason : <span>2</span></div></div><button class="dots-btn">⋮</button></div>
+    <div class="dept-row"><div><div class="dept-title">External Outlets</div><div class="dept-sub">Incidental Charges : <span>3</span></div></div><button class="dots-btn">⋮</button></div>
+    <div class="dept-row"><div><div class="dept-title">Food and Beverages</div><div class="dept-sub">Incidental Charges : <span>59</span> | Reason : <span>0</span></div></div><button class="dots-btn">⋮</button></div>
+    <div class="dept-row"><div><div class="dept-title">Front Office</div><div class="dept-sub">Incidental Charges : <span>12</span> | Reason : <span>12</span></div></div><button class="dots-btn">⋮</button></div>
+    <div class="dept-row active" style="position:relative;">
+      <div><div class="dept-title">Room Revenue</div><div class="dept-sub">Incidental Charges : <span>8</span> | Reason : <span>5</span></div></div>
+      <button class="dots-btn" style="color:#E8891A">⋮</button>
+      <!-- dropdown shown open -->
+      <div class="dropdown" style="position:absolute;right:14px;top:36px;">
+        <div>Edit</div>
+        <div class="active-item">Incidental Charges</div>
+        <div>Reason</div>
+      </div>
+    </div>
+    <div class="dept-row" style="margin-top:60px;"><div><div class="dept-title">Sales &amp; Marketing</div><div class="dept-sub">Sales Channel : <span>2</span></div></div><button class="dots-btn">⋮</button></div>
+  </div>
+
+  <!-- SCREEN 2: Incidental Charges list -->
+  <div class="screen" style="max-width:230px; flex:0 0 230px;">
+    <div class="screen-label">② Room Revenue → Incidental Charges</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="back-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort</div></div>
+      </div>
+    </div>
+    <div class="mod-bar">... / Incidental Charges</div>
+    <div class="ic-header"><span>Room Revenue — Charges (8)</span></div>
+    <div class="add-row"><button class="btn-new"><i class="ti ti-plus" style="font-size:10px;vertical-align:-1px"></i> New</button></div>
+    <div class="ic-row"><div><div class="name">Room Charges</div><div class="meta">Budget: Room Revenue</div></div><i class="ti ti-chevron-right" style="color:#ccc;font-size:13px" aria-hidden="true"></i></div>
+    <div class="ic-row"><div><div class="name">Extra Bed</div><div class="meta">Budget: Room Revenue</div></div><i class="ti ti-chevron-right" style="color:#ccc;font-size:13px" aria-hidden="true"></i></div>
+    <div class="ic-row"><div><div class="name">Pet Charges</div><div class="meta">Budget: —</div></div><i class="ti ti-chevron-right" style="color:#ccc;font-size:13px" aria-hidden="true"></i></div>
+    <div class="ic-row active"><div><div class="name">Guest Laundry</div><div class="meta">Budget: Room Revenue</div></div><i class="ti ti-chevron-right" style="color:#E8891A;font-size:13px" aria-hidden="true"></i></div>
+    <div class="ic-row"><div><div class="name">Minibar</div><div class="meta">Budget: —</div></div><i class="ti ti-chevron-right" style="color:#ccc;font-size:13px" aria-hidden="true"></i></div>
+  </div>
+
+  <!-- SCREEN 3: Charge Item form with Budget field -->
+  <div class="screen" style="flex:1;">
+    <div class="screen-label">③ Edit Charge Item — Budget field added before e-Invoice</div>
+    <div class="hms-hdr">
+      <div class="hms-hdr-left">
+        <button class="close-btn"><i class="ti ti-x" aria-hidden="true"></i></button>
+        <div><div class="hms-sys">HMS</div><div class="hms-hotel">Klana Beach Resort</div></div>
+      </div>
+    </div>
+    <div class="mod-bar">... / Incidental Charges <span class="new-btn">Save</span></div>
+    <div class="form-wrap">
+      <div class="form-section">Charge Item</div>
+      <div class="form-body">
+        <div class="field-row">
+          <div class="field-label">Title</div>
+          <input class="field-input" value="Guest Laundry" placeholder="Title">
+        </div>
+        <div class="field-row-2">
+          <div>
+            <div class="field-label">Amount (MYR)</div>
+            <input class="field-input" value="1.00" placeholder="Amount">
+          </div>
+          <div>
+            <div class="field-label">Tax Scheme *</div>
+            <input class="field-input" value="SR 8%" placeholder="Tax Scheme">
+          </div>
+        </div>
+
+        <div class="divider-label">Outlet Code</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox"> Rate Element</label>
+          <label><input type="checkbox"> GuestApp – F&amp;B</label>
+          <label><input type="checkbox"> GuestApp – OnlineShop</label>
+          <label><input type="checkbox"> POS Interface</label>
+          <label><input type="checkbox"> Event Interface</label>
+          <label><input type="checkbox"> Allow Negative</label>
+          <label><input type="checkbox"> Package Redemption</label>
+          <label><input type="checkbox"> Kiosk</label>
+          <label><input type="checkbox"> 3rd Party POS</label>
+        </div>
+
+        <!-- NEW: Budget field — placed before e-Invoice -->
+        <div class="budget-field">
+          <div class="bfield-label">
+            <i class="ti ti-calculator" style="font-size:12px" aria-hidden="true"></i>
+            Budget Mapping
+            <span class="new-tag">NEW</span>
+          </div>
+          <select class="budget-select">
+            <option value="">— Select Budget Revenue Line —</option>
+            <option selected>Room Revenue</option>
+            <option>Guest Laundry</option>
+            <option>Extra Bed Charges</option>
+            <option>Food &amp; Beverage</option>
+          </select>
+        </div>
+
+        <div class="checkbox-group">
+          <label><input type="checkbox" checked style="accent-color:#E8891A"> e-Invoice</label>
+        </div>
+
+        <div class="upload-link"><i class="ti ti-paperclip" style="font-size:11px;vertical-align:-1px" aria-hidden="true"></i> Upload Attachment(s)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
